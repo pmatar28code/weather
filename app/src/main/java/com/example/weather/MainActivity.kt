@@ -1,6 +1,17 @@
 
 package com.example.weather
+import android.Manifest
+import android.content.pm.PackageManager
+import android.location.Location
+import android.os.Bundle
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import com.google.android.gms.location.*
+import com.example.weather.databinding.ActivityMainBinding
+import com.example.weather.repository.ForeCastRepository
 
+/*
 import android.Manifest
 import android.content.pm.PackageManager
 import android.location.Location
@@ -10,10 +21,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import com.example.weather.databinding.ActivityMainBinding
 import com.google.android.gms.location.*
-
-
-
+*/
 class MainActivity : AppCompatActivity() {
+
     private var mFusedLocationClient: FusedLocationProviderClient? = null
     private var locationRequest: LocationRequest? = null
     private var mCurrentLocation: Location? = null
@@ -24,6 +34,7 @@ class MainActivity : AppCompatActivity() {
     {
         super.onCreate(savedInstanceState)
         val binding = ActivityMainBinding.inflate(layoutInflater)
+
         setContentView(binding.root)
 
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
@@ -51,9 +62,9 @@ class MainActivity : AppCompatActivity() {
 
         //Check user permission at run time
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
-                ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION),
-                    locationRequestCode)
+                locationRequestCode)
 
         }
         else
@@ -61,16 +72,21 @@ class MainActivity : AppCompatActivity() {
             requestLocation()
         }
 
-        binding.button6 .setOnClickListener {
+        binding.locationButton.setOnClickListener {
             var location = getCurrentLocation()
-            binding.currentLocationText.text = "Updated : ${ location?.latitude.toString()}  ${location?.longitude.toString()}"
+            binding.locationText.text = "Updated : ${ location?.latitude.toString()}  ${location?.longitude.toString()}"
+            ForeCastRepository().loadCurrentForecast("94040")
+            var temperature = binding.tempText
+            temperature.text = ForeCastRepository().currentForecast?.forecast?.temp.toString()
         }
+
+
     }
 
     //request location
     private fun requestLocation()
     {
-        if (ActivityCompat.checkSelfPermission (this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
             //    ActivityCompat#requestPermissions
             // here to request the missing permissions, and then overriding
@@ -109,3 +125,10 @@ class MainActivity : AppCompatActivity() {
         return mCurrentLocation ?: null
     }
 }
+/*
+api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid={1fb88785b228435d667386a70a2eb3b4}
+
+for five days
+api.openweathermap.org/data/2.5/forecast?lat={lat}&lon={lon}&appid={1fb88785b228435d667386a70a2eb3b4}
+
+ */
