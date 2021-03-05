@@ -2,123 +2,74 @@ package com.example.weather
 
 import android.Manifest
 import android.content.pm.PackageManager
-import android.location.Location
 import android.os.Bundle
+import android.widget.Button
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import com.example.weather.databinding.ActivityMainBinding
-import com.example.weather.networking.Network
-import com.google.android.gms.location.*
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
+import com.google.android.gms.location.LocationListener;
+import org.w3c.dom.Text
 
-
-
-class MainActivity : AppCompatActivity() {
-    private var mFusedLocationClient: FusedLocationProviderClient? = null
-    private var locationRequest: LocationRequest? = null
-    private var mCurrentLocation: Location? = null
-    private var locationCallback: LocationCallback? = null
-    private val locationRequestCode = 1000
+class MainActivity:AppCompatActivity() {
+    private lateinit var fuseLocationProvider : FusedLocationProviderClient
+    private val requestLocationCode = 100
 
     override fun onCreate(savedInstanceState: Bundle?)
     {
         super.onCreate(savedInstanceState)
         val binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(R.layout.activity_main)
 
-        setContentView(binding.root)
+        fuseLocationProvider = LocationServices.getFusedLocationProviderClient(this)
 
-        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 
-        locationRequest = LocationRequest.create()
-        locationRequest?.priority = LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY
-        locationRequest?.interval = (10 * 1000).toLong() // 10 seconds
-        locationRequest?.fastestInterval = (5 * 1000).toLong() // 5 seconds
 
-        locationCallback = object : LocationCallback() {
-            override fun onLocationResult(locationResult: LocationResult?) {
-                if (locationResult == null) {
-                    return
-                }
-                for (location in locationResult.locations) {
-                    if (location != null) {
-                        mCurrentLocation = location
-                        if (mFusedLocationClient != null) {
-                            mFusedLocationClient?.removeLocationUpdates(locationCallback)
-                        }
-                    }
-                }
-            }
-        }
 
-        //Check user permission at run time
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
-                ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION),
-                    locationRequestCode)
+
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission
+                (this, Manifest.permission.ACCESS_COARSE_LOCATION
+                ) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION
+                    , Manifest.permission.ACCESS_COARSE_LOCATION), requestLocationCode)
+
+
+        } else {
+            getLocationListener()
 
         }
-        else
-        {
-            requestLocation()
-        }
-
-        binding.locationButton.setOnClickListener {
-            var location = getCurrentLocation()
-            binding.locationText.text = "Updated : ${ location?.latitude.toString()}  ${location?.longitude.toString()}"
-
-            Network.getWeather()
-            var testingText = binding.locationText
-            testingText.text = Network.testing
-        }
-
 
     }
 
-    //request location
-    private fun requestLocation()
-    {
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-            return
+
+    private fun getLocationListener() {
+        var locationButton = findViewById<Button>(R.id.location_button).setOnClickListener {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+            return@setOnClickListener
         }
-        mFusedLocationClient?.lastLocation?.addOnSuccessListener(this) { location ->
-            if (location != null) {
-                mCurrentLocation = location
-            } else {
-                mFusedLocationClient?.requestLocationUpdates(locationRequest, locationCallback, null)
-            }
-        }
+        fuseLocationProvider.lastLocation
+                .addOnSuccessListener {
+                    var textLocation = findViewById<TextView>(R.id.location_text)
+                    textLocation.text = "Lat: ${it.latitude} - Lon: ${it.longitude}"
+
+                }
     }
 
-    //on request permission result
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        when{
+            requestCode == requestLocationCode -> {
+                if(permissions.contains(Manifest.permission.ACCESS_FINE_LOCATION) || permissions.contains(Manifest.permission.ACCESS_COARSE_LOCATION)){
+                    getLocationListener()
+                }
+            }
+        }
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        when (requestCode) {
-            1000 -> {
-                // If request is cancelled, the result arrays are empty.
-                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    requestLocation()
-
-                } else {
-                    Toast.makeText(this, "Permission denied", Toast.LENGTH_SHORT).show()
-                }
-            }
-        }
-    }
-
-    private fun getCurrentLocation(): Location? {
-        return mCurrentLocation ?: null
     }
 }
-
-
-
-
-
-
