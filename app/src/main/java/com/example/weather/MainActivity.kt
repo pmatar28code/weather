@@ -8,8 +8,11 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.weather.databinding.ActivityMainBinding
+import com.example.weather.networking.ForecastClient
 import com.example.weather.networking.WeatherClient
+import com.example.weather.recycleview.ForecastAdapter
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import retrofit2.Call
@@ -24,12 +27,21 @@ class MainActivity:AppCompatActivity() {
     private var lat = 0.00
     private var units = "metric"
     var currentWeather: CurrentWeather? = null
+    var forecastList = mutableListOf<ForecastServer.Daily>()
 
     override fun onCreate(savedInstanceState: Bundle?)
     {
+
         super.onCreate(savedInstanceState)
         val binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(R.layout.activity_main)
+        setContentView(binding.root)
+
+        val forecastAdapter = ForecastAdapter()
+        binding.forecastItem.apply {
+           adapter = forecastAdapter
+            forecastAdapter.submitList(forecastList)
+           layoutManager = LinearLayoutManager(this@MainActivity)
+        }
 
         fuseLocationProvider = LocationServices.getFusedLocationProviderClient(this)
 
@@ -66,6 +78,41 @@ class MainActivity:AppCompatActivity() {
         })
     }
 
+    private fun callGetForecast() {
+        ForecastClient.ForecastService.getForecast(lat, lon,units ,apiKey).enqueue(object : Callback<ForecastServer> {
+            override fun onFailure(call: Call<ForecastServer>, t: Throwable) {
+                Toast.makeText(this@MainActivity, "onFailure $t", Toast.LENGTH_LONG).show()
+            }
+            override fun onResponse(call: Call<ForecastServer>, response: Response<ForecastServer>) {
+                if (response.isSuccessful) {
+                    var daily = response.body()?.daily
+                     for(item in daily!!){
+                        forecastList.add(item)
+                    }
+                }
+            }
+        })
+    }
+
+     fun ForecastServer.toCurrentForecast(): CurrentForecast.Daily {
+        return CurrentForecast.Daily(
+                clouds = daily[0].clouds,
+                dewPoint = daily[0].dewPoint,
+                dt = daily[0].dt,
+                feelsLike = daily[0].feelsLike,
+                humidity = daily[0].humidity,
+                pop = daily[0].pop,
+                pressure = daily[0].pressure,
+                rain = daily[0].rain,
+                sunrise = daily[0].sunrise,
+                sunset = daily[0].sunset,
+                temp = daily[0].temp, //CurrentForecast.Daily.Temp,
+                uvi = daily[0].uvi,
+                weather = daily[0].weather, //List<CurrentForecast.Daily.Weather>,
+                windDeg = daily[0].windDeg,
+                windSpeed = daily[0].windSpeed
+        )
+    }
     private fun WeatherServer.toCurrentWeather(): CurrentWeather {
         return CurrentWeather(
                 coord = Coord(
@@ -133,6 +180,7 @@ class MainActivity:AppCompatActivity() {
                  lat = it.latitude
                  lon = it.longitude
                  callGetWeather()
+                 callGetForecast()
                  }
             }
        }
