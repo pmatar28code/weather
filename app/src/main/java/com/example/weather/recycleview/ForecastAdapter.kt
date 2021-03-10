@@ -4,15 +4,16 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.example.weather.CurrentForecast
 import com.example.weather.ForecastServer
 import com.example.weather.databinding.ItemForecastBinding
 
-class ForecastAdapter: androidx.recyclerview.widget.ListAdapter<ForecastServer.Daily, ForecastAdapter.ForecastViewHolder>(diffUtil) {
+class ForecastAdapter: androidx.recyclerview.widget.ListAdapter<CurrentForecast.Daily, ForecastAdapter.ForecastViewHolder>(diffUtil) {
    companion object {
-       private val diffUtil = object : DiffUtil.ItemCallback<ForecastServer.Daily>(){
-           override fun areItemsTheSame(oldItem: ForecastServer.Daily, newItem: ForecastServer.Daily) = true
+       private val diffUtil = object : DiffUtil.ItemCallback<CurrentForecast.Daily>(){
+           override fun areItemsTheSame(oldItem: CurrentForecast.Daily, newItem: CurrentForecast.Daily) = true
 
-           override fun areContentsTheSame(oldItem: ForecastServer.Daily, newItem: ForecastServer.Daily): Boolean {
+           override fun areContentsTheSame(oldItem: CurrentForecast.Daily, newItem: CurrentForecast.Daily): Boolean {
                return oldItem == newItem
            }
 
@@ -33,7 +34,7 @@ class ForecastAdapter: androidx.recyclerview.widget.ListAdapter<ForecastServer.D
     class ForecastViewHolder(
             private val binding: ItemForecastBinding
     ):RecyclerView.ViewHolder(binding.root){
-        fun onBind(Forecast:ForecastServer.Daily){
+        fun onBind(Forecast:CurrentForecast.Daily){
             binding.apply {
                 tempText.text = Forecast.temp.toString()
                // descriptionText.text =Forecast.weather[0].description

@@ -28,7 +28,7 @@ class MainActivity:AppCompatActivity() {
     private var lat = 0.00
     private var units = "metric"
     var currentWeather: CurrentWeather? = null
-    var forecastList = mutableListOf<ForecastServer.Daily>()
+    var forecastList = mutableListOf<CurrentForecast.Daily>()
 
     override fun onCreate(savedInstanceState: Bundle?)
     {
@@ -89,8 +89,25 @@ class MainActivity:AppCompatActivity() {
                     Toast.makeText(this@MainActivity, "onResponse Forecast", Toast.LENGTH_LONG).show()
                     var daily = response.body()?.daily
                      for(item in daily!!){
-                        forecastList.add(item)
-                    }
+                         var current = CurrentForecast.Daily(
+                                 item.clouds,
+                                 item.dewPoint,
+                                 item.dt,
+                                 item.feelsLike,
+                                 item.humidity,
+                                 item.pop,
+                                 item.pressure,
+                                 item.rain,
+                                 item.sunrise,
+                                 item.sunset,
+                                 item.temp,
+                                 item.uvi,
+                                 item.weather,
+                                 item.windDeg,
+                                 item.windSpeed
+                         )
+                         forecastList.add(current)
+                     }
                 }
             }
         })
