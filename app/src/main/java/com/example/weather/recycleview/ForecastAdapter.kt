@@ -36,7 +36,7 @@ class ForecastAdapter: androidx.recyclerview.widget.ListAdapter<ForecastServer.D
         fun onBind(Forecast:ForecastServer.Daily){
             binding.apply {
                 tempText.text = Forecast.temp.toString()
-                descriptionText.text =Forecast.weather[0].description
+               // descriptionText.text =Forecast.weather[0].description
             }
 
         }

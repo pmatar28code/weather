@@ -23,6 +23,7 @@ class MainActivity:AppCompatActivity() {
     private lateinit var fuseLocationProvider : FusedLocationProviderClient
     private val requestLocationCode = 100
     private val apiKey = "ec17ade9a281a44dcef2e94dd8e28fca"
+    private val apikeyFore ="1fb88785b228435d667386a70a2eb3b4"
     private var lon = 0.00
     private var lat = 0.00
     private var units = "metric"
@@ -79,12 +80,13 @@ class MainActivity:AppCompatActivity() {
     }
 
     private fun callGetForecast() {
-        ForecastClient.ForecastService.getForecast(lat, lon,units ,apiKey).enqueue(object : Callback<ForecastServer> {
+        ForecastClient.ForecastService.getForecast(lat, lon,units ,apikeyFore).enqueue(object : Callback<ForecastServer> {
             override fun onFailure(call: Call<ForecastServer>, t: Throwable) {
-                Toast.makeText(this@MainActivity, "onFailure $t", Toast.LENGTH_LONG).show()
+                Toast.makeText(this@MainActivity, "onFailure Forecast$t", Toast.LENGTH_LONG).show()
             }
             override fun onResponse(call: Call<ForecastServer>, response: Response<ForecastServer>) {
                 if (response.isSuccessful) {
+                    Toast.makeText(this@MainActivity, "onResponse Forecast", Toast.LENGTH_LONG).show()
                     var daily = response.body()?.daily
                      for(item in daily!!){
                         forecastList.add(item)
