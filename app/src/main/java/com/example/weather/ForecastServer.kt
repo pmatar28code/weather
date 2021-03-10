@@ -13,9 +13,9 @@ data class ForecastServer(
         @Json(name = "hourly")
         val hourly: List<Hourly>,
         @Json(name = "lat")
-        val lat: Int,
+        val lat: Double,//
         @Json(name = "lon")
-        val lon: Int,
+        val lon: Double,//
         @Json(name = "minutely")
         val minutely: List<Minutely>,
         @Json(name = "timezone")
@@ -44,7 +44,7 @@ data class ForecastServer(
             @Json(name = "temp")
             val temp: Double,
             @Json(name = "uvi")
-            val uvi: Int,
+            val uvi: Double,//
             @Json(name = "visibility")
             val visibility: Int,
             @Json(name = "weather")
@@ -83,8 +83,8 @@ data class ForecastServer(
             val pop: Double,
             @Json(name = "pressure")
             val pressure: Int,
-            @Json(name = "rain")
-            val rain: Double,
+            //@Json(name = "rain")
+            //val rain: Double,//
             @Json(name = "sunrise")
             val sunrise: Int,
             @Json(name = "sunset")
@@ -157,12 +157,12 @@ data class ForecastServer(
             val pop: Double,
             @Json(name = "pressure")
             val pressure: Int,
-            @Json(name = "rain")
-            val rain: Rain,
+           // @Json(name = "rain")
+          //  val rain: Rain,
             @Json(name = "temp")
             val temp: Double,
             @Json(name = "uvi")
-            val uvi: Int,
+            val uvi: Double,//
             @Json(name = "visibility")
             val visibility: Int,
             @Json(name = "weather")

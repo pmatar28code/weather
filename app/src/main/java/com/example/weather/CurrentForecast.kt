@@ -43,7 +43,7 @@ data class CurrentForecast(
             val humidity: Int,
             val pop: Double,
             val pressure: Int,
-            val rain: Double,
+           // val rain: Double,
             val sunrise: Int,
             val sunset: Int,
             val temp: ForecastServer.Daily.Temp,
