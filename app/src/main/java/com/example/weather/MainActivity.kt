@@ -108,6 +108,8 @@ class MainActivity:AppCompatActivity() {
                          )
                          forecastList.add(current)
                      }
+                    var textTest = findViewById<TextView>(R.id.test_text)
+                    textTest.text = forecastList[0].temp.toString()
                 }
             }
         })
