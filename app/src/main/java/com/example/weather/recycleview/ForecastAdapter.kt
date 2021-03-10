@@ -3,12 +3,13 @@ package com.example.weather.recycleview
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.weather.CurrentForecast
 import com.example.weather.ForecastServer
 import com.example.weather.databinding.ItemForecastBinding
 
-class ForecastAdapter: androidx.recyclerview.widget.ListAdapter<CurrentForecast.Daily, ForecastAdapter.ForecastViewHolder>(diffUtil) {
+class ForecastAdapter: ListAdapter<CurrentForecast.Daily, ForecastAdapter.ForecastViewHolder>(diffUtil) {
    companion object {
        private val diffUtil = object : DiffUtil.ItemCallback<CurrentForecast.Daily>(){
            override fun areItemsTheSame(oldItem: CurrentForecast.Daily, newItem: CurrentForecast.Daily) = true

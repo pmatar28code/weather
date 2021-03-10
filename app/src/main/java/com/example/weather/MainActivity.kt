@@ -9,6 +9,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.weather.databinding.ActivityMainBinding
 import com.example.weather.networking.ForecastClient
 import com.example.weather.networking.WeatherClient
@@ -36,13 +37,6 @@ class MainActivity:AppCompatActivity() {
         super.onCreate(savedInstanceState)
         val binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        val forecastAdapter = ForecastAdapter()
-        binding.forecastItem.apply {
-           adapter = forecastAdapter
-            forecastAdapter.submitList(forecastList)
-           layoutManager = LinearLayoutManager(this@MainActivity)
-        }
 
         fuseLocationProvider = LocationServices.getFusedLocationProviderClient(this)
 
@@ -72,8 +66,6 @@ class MainActivity:AppCompatActivity() {
                     currentWeather = response.body()?.toCurrentWeather()
                     var textTest = findViewById<TextView>(R.id.textView)
                     textTest.text = currentWeather?.weather?.description
-
-
                 }
             }
         })
@@ -178,11 +170,7 @@ class MainActivity:AppCompatActivity() {
                 cod = cod
         )
     }
-
-
-
-
-
+    
     private fun getLocationListener() {
         var locationButton = findViewById<Button>(R.id.location_button).setOnClickListener {
         if (ActivityCompat.checkSelfPermission(
@@ -202,6 +190,13 @@ class MainActivity:AppCompatActivity() {
                  lon = it.longitude
                  callGetWeather()
                  callGetForecast()
+                 val recycler = findViewById<RecyclerView>(R.id.forecast_item)
+                 recycler.apply {
+                     val forecastAdapter = ForecastAdapter()
+                     adapter = TestAdapter(forecastList)
+                     //forecastAdapter.submitList(forecastList)
+                     layoutManager = LinearLayoutManager(this@MainActivity)
+                    }
                  }
             }
        }
