@@ -3,8 +3,11 @@ package com.example.weather
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.weather.databinding.ItemForecastBinding
+import com.example.weather.repositories.WeatherRepository
+import java.util.*
 
 class TestAdapter(
         private val items:List<CurrentForecast.Daily>
@@ -21,21 +24,22 @@ class TestAdapter(
 
     override fun getItemCount() = items.size
 
-     override fun onBindViewHolder(
+    override fun onBindViewHolder(
             holder: ForecastViewHolder,position: Int) {
         val item = items[position]
         holder.onBind(items[position])
 
         }
 
-
     class ForecastViewHolder(
             private val binding: ItemForecastBinding
     ):RecyclerView.ViewHolder(binding.root){
         fun onBind(Forecast:CurrentForecast.Daily){
             binding.apply {
-                tempText.text = Forecast.temp.toString()
-                // descriptionText.text =Forecast.weather[0].description
+                tempText.text = Forecast.temp.max.toString()
+               // iconView.setImageResource(Forecast.weather[0].id)
+                var dateTime = WeatherRepository.getShortDate(Forecast.dt.toLong())
+                dtText.text =dateTime
             }
 
         }
