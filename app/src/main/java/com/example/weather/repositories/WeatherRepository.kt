@@ -19,8 +19,10 @@ object WeatherRepository {
         var context:Context ?= null
     }
     var locationObj = Location()
-    var currentWeather: CurrentWeather? = null
+    var currentWeather: CurrentWeather?= null
+    var currentWeatherRecycler:CurrentWeather?= null
     var forecastList = mutableListOf<CurrentForecast.Daily>()
+    var currentList = mutableListOf<CurrentForecast.Hourly>()
     var currentTemp:String = ""
     var tempTest = ""
     var testAtCero =""
@@ -93,6 +95,34 @@ object WeatherRepository {
                     Toast.makeText(context, "onResponse get Weather ${response.body()?.main?.tempMax}", Toast.LENGTH_LONG).show()
                     currentWeather = response.body()?.toCurrentWeather()
                     tempTest = currentWeather?.weather?.description.toString()
+                }
+            }
+        })
+    }
+
+    fun callGetWeatherRecycler(context: Context, lat: Double, lon: Double, units: String, apiKey: String) {
+        ForecastClient.ForecastService.getForecast(lat, lon, units, apiKey).enqueue(object : Callback<ForecastServer> {
+            override fun onFailure(call: Call<ForecastServer>, t: Throwable) {
+                Toast.makeText(context, "onFailure get Weather $t", Toast.LENGTH_LONG).show()
+            }
+            override fun onResponse(call: Call<ForecastServer>, response: Response<ForecastServer>) {
+                if (response.isSuccessful) {
+                    Toast.makeText(context, "onResponse get Weather Day Recycler ", Toast.LENGTH_LONG).show()
+                    var hourly = response.body()?.hourly
+                    for(item in hourly!!){
+                        var current = CurrentForecast.Hourly(
+                                item.clouds,
+                                item.temp,
+                                item.dt,
+                                item.feelsLike,
+                                item.humidity,
+                                item.pop,
+                                item.pressure,
+                                item.dewPoint
+                        )
+                        currentList.add(current)
+                    }
+
                 }
             }
         })

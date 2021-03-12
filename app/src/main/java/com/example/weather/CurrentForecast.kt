@@ -84,13 +84,13 @@ data class CurrentForecast(
             val humidity: Int,
             val pop: Double,
             val pressure: Int,
-            val rain: Rain,
-            val temp: Double,
-            val uvi: Int,
-            val visibility: Int,
-            val weather: List<Weather>,
-            val windDeg: Int,
-            val windSpeed: Double
+            //val rain: Rain?,
+            val temp: Double
+           // val uvi: Int?,
+            //val visibility: Int?,
+            //val weather: List<Weather>,
+           // val windDeg: Int?,
+           // val windSpeed: Double?
     ) {
         data class Rain(
                 val h: Double

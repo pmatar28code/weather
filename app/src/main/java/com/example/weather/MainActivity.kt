@@ -50,7 +50,7 @@ class MainActivity:AppCompatActivity() {
 
                     // This method will be executed once the timer is over
                 },
-                1000 // value in milliseconds
+                2000 // value in milliseconds
         )
         Handler().postDelayed(
                 {
@@ -58,8 +58,29 @@ class MainActivity:AppCompatActivity() {
 
                     // This method will be executed once the timer is over
                 },
-                7000 // value in milliseconds
+                2000 // value in milliseconds
         )
+
+        binding.button2.setOnClickListener {
+            Handler().postDelayed(
+                    {
+                        swapFragmentsForecast(CurrentRecyclerFragment())
+
+                        // This method will be executed once the timer is over
+                    },
+                    500 // value in milliseconds
+            )
+        }
+        binding.button.setOnClickListener {
+            Handler().postDelayed(
+                    {
+                        swapFragmentsForecast(ForecastFragment())
+
+                        // This method will be executed once the timer is over
+                    },
+                    500 // value in milliseconds
+            )
+        }
     }
 
     private fun getLocationListener() {
@@ -82,6 +103,7 @@ class MainActivity:AppCompatActivity() {
                 WeatherRepository.locationObj.context = this
                 WeatherRepository.callGetForecast(this,lat,lon,units,apikeyFore)
                 WeatherRepository.callGetWeather(this,lat,lon,units,apiKey)
+                WeatherRepository.callGetWeatherRecycler(this,lat,lon,units,apikeyFore)
 
                 //swapFragments(ForecastFragment())
                 //}
