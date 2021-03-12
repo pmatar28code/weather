@@ -13,6 +13,12 @@ import retrofit2.Response
 import java.util.*
 
 object WeatherRepository {
+    class Location(){
+        var lon:Double = 0.0
+        var lat:Double = 0.0
+        var context:Context ?= null
+    }
+    var locationObj = Location()
     var currentWeather: CurrentWeather? = null
     var forecastList = mutableListOf<CurrentForecast.Daily>()
     var currentTemp:String = ""
@@ -99,7 +105,7 @@ object WeatherRepository {
             }
             override fun onResponse(call: Call<ForecastServer>, response: Response<ForecastServer>) {
                 if (response.isSuccessful) {
-                   // Toast.makeText(context, "onResponse Forecast", Toast.LENGTH_LONG).show()
+                    Toast.makeText(context, "onResponse Forecast ${response.body()?.current?.temp}", Toast.LENGTH_LONG).show()
                     var daily = response.body()?.daily
                     for(item in daily!!){
                         var current = CurrentForecast.Daily(
@@ -121,9 +127,9 @@ object WeatherRepository {
                         )
                         forecastList.add(current)
                     }
-                    val inflater = LayoutInflater.from(context)
-                    val binding = ActivityMainBinding.inflate(inflater)
-                    testAtCero = forecastList[0].temp.toString()
+                    //val inflater = LayoutInflater.from(context)
+                    //val binding = ActivityMainBinding.inflate(inflater)
+                    //testAtCero = forecastList[0].temp.toString()
                 }
             }
         })

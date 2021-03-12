@@ -9,10 +9,10 @@ import com.example.weather.databinding.ItemForecastBinding
 import com.example.weather.repositories.WeatherRepository
 import java.util.*
 
-class TestAdapter(
+class ForecastAdapter(
         private val items:List<CurrentForecast.Daily>
 
-): RecyclerView.Adapter<TestAdapter.ForecastViewHolder>() {
+): RecyclerView.Adapter<ForecastAdapter.ForecastViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int)
             :ForecastViewHolder {
