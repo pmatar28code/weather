@@ -65,9 +65,9 @@ class MainActivity:AppCompatActivity() {
                  lon = it.longitude
                  WeatherRepository.callGetWeather(this,lat,lon,units,apiKey)
                  var weatherText = findViewById<TextView>(R.id.weather_text)
-                 weatherText.text = WeatherRepository.currentTemp
+                 weatherText.text = WeatherRepository.currentWeather?.main?.temp.toString()
                  var tempTest = findViewById<TextView>(R.id.textView)
-                 tempTest.text = WeatherRepository.tempTest
+                 tempTest.text = WeatherRepository.currentWeather?.weather?.description
                  var testText = findViewById<TextView>(R.id.test_text)
                  testText.text = WeatherRepository.testAtCero
                  WeatherRepository.callGetForecast(this,lat,lon,units,apikeyFore)
