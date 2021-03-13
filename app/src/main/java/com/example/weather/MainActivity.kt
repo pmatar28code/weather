@@ -46,11 +46,11 @@ class MainActivity:AppCompatActivity() {
 
         Handler().postDelayed(
                 {
-                    swapFragmentsForecast(ForecastFragment())
+                    swapFragmentsForecast(CurrentRecyclerFragment())
 
                     // This method will be executed once the timer is over
                 },
-                2000 // value in milliseconds
+                1000 // value in milliseconds
         )
         Handler().postDelayed(
                 {
@@ -58,13 +58,13 @@ class MainActivity:AppCompatActivity() {
 
                     // This method will be executed once the timer is over
                 },
-                2000 // value in milliseconds
+                2500 // value in milliseconds
         )
 
         binding.button2.setOnClickListener {
             Handler().postDelayed(
                     {
-                        swapFragmentsForecast(CurrentRecyclerFragment())
+                        swapFragmentsForecast(ForecastFragment())
 
                         // This method will be executed once the timer is over
                     },
@@ -74,7 +74,7 @@ class MainActivity:AppCompatActivity() {
         binding.button.setOnClickListener {
             Handler().postDelayed(
                     {
-                        swapFragmentsForecast(ForecastFragment())
+                        swapFragmentsForecast(CurrentRecyclerFragment())
 
                         // This method will be executed once the timer is over
                     },

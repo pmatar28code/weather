@@ -31,7 +31,15 @@ class ForecastAdapter(
             holder: ForecastViewHolder,position: Int) {
         val item = items[position]
         holder.onBind(items[position])
+
+        var icon = item.weather[0].icon
+        fun getCurrentImage(iconCode:String):String {
+            var iconUrl = "http://openweathermap.org/img/w/$iconCode.png";
+            return iconUrl
+        }
+        Picasso.get().load(getCurrentImage(icon)).into(holder.itemView.findViewById<ImageView>(R.id.icon_view))
     }
+
 
     class ForecastViewHolder(
             private val binding: ItemForecastBinding
@@ -42,17 +50,17 @@ class ForecastAdapter(
                 iconView
                 var dateTime = WeatherRepository.getShortDate(Forecast.dt.toLong())
                 dtText.text =dateTime
-                Picasso.get().load(getCurrentImage(getImageCode())).into(iconView)
+               // Picasso.get().load(getCurrentImage(getImageCode())).into(iconView)
             }
         }
-        fun getCurrentImage(iconCode:String):String {
-            var iconUrl = "http://openweathermap.org/img/w/$iconCode.png";
-            return iconUrl
-        }
-        fun getImageCode():String{
-            val imageCode = WeatherRepository.forecastList[0].weather[0].icon
-            return imageCode
-        }
+       // fun getCurrentImage(iconCode:String):String {
+          //  var iconUrl = "http://openweathermap.org/img/w/$iconCode.png";
+          //  return iconUrl
+       // }
+        //fun getImageCode():String{
+           // val imageCode = WeatherRepository.forecastList[0].weather[0].icon
+           // return imageCode
+        //}
     }
 }
 

@@ -48,11 +48,6 @@ object WeatherRepository {
         }
     }
 
-
-
-
-
-
     private fun WeatherServer.toCurrentWeather(): CurrentWeather {
         return CurrentWeather(
                 coord = Coord(
@@ -101,13 +96,13 @@ object WeatherRepository {
     fun callGetWeather(context: Context, lat: Double, lon: Double, units: String, apiKey: String) {
         WeatherClient.weatherService.getWeather(lat, lon, units, apiKey).enqueue(object : Callback<WeatherServer> {
             override fun onFailure(call: Call<WeatherServer>, t: Throwable) {
-                Toast.makeText(context, "onFailure get Weather $t", Toast.LENGTH_LONG).show()
+               // Toast.makeText(context, "onFailure get Weather $t", Toast.LENGTH_LONG).show()
             }
             override fun onResponse(call: Call<WeatherServer>, response: Response<WeatherServer>) {
                 if (response.isSuccessful) {
                     currentTemp = response.body()?.main?.temp.toString()
                     //textWeather.text = response.body()?.main?.temp.toString()
-                    Toast.makeText(context, "onResponse get Weather ${response.body()?.main?.tempMax}", Toast.LENGTH_LONG).show()
+                   // Toast.makeText(context, "onResponse get Weather ${response.body()?.main?.tempMax}", Toast.LENGTH_LONG).show()
                     currentWeather = response.body()?.toCurrentWeather()
                     tempTest = currentWeather?.weather?.description.toString()
                 }
@@ -118,11 +113,11 @@ object WeatherRepository {
     fun callGetWeatherRecycler(context: Context, lat: Double, lon: Double, units: String, apiKey: String) {
         ForecastClient.ForecastService.getForecast(lat, lon, units, apiKey).enqueue(object : Callback<ForecastServer> {
             override fun onFailure(call: Call<ForecastServer>, t: Throwable) {
-                Toast.makeText(context, "onFailure get Weather $t", Toast.LENGTH_LONG).show()
+                //Toast.makeText(context, "onFailure get Weather $t", Toast.LENGTH_LONG).show()
             }
             override fun onResponse(call: Call<ForecastServer>, response: Response<ForecastServer>) {
                 if (response.isSuccessful) {
-                    Toast.makeText(context, "onResponse get Weather Day Recycler ", Toast.LENGTH_LONG).show()
+                   // Toast.makeText(context, "onResponse get Weather Day Recycler ", Toast.LENGTH_LONG).show()
                     var hourly = response.body()?.hourly
                     for(item in hourly!!){
                         var current = CurrentForecast.Hourly(
@@ -147,11 +142,11 @@ object WeatherRepository {
     fun callGetForecast(context : Context,lat : Double,lon : Double,units : String , apikeyFore: String) {
         ForecastClient.ForecastService.getForecast(lat, lon,units ,apikeyFore).enqueue(object : Callback<ForecastServer> {
             override fun onFailure(call: Call<ForecastServer>, t: Throwable) {
-                Toast.makeText(context, "onFailure Forecast$t", Toast.LENGTH_LONG).show()
+               // Toast.makeText(context, "onFailure Forecast$t", Toast.LENGTH_LONG).show()
             }
             override fun onResponse(call: Call<ForecastServer>, response: Response<ForecastServer>) {
                 if (response.isSuccessful) {
-                    Toast.makeText(context, "onResponse Forecast ${response.body()?.current?.temp}", Toast.LENGTH_LONG).show()
+                  //  Toast.makeText(context, "onResponse Forecast ${response.body()?.current?.temp}", Toast.LENGTH_LONG).show()
                     var daily = response.body()?.daily
                     for(item in daily!!){
                         var current = CurrentForecast.Daily(

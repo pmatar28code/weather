@@ -9,20 +9,35 @@
         android:id="@+id/item_current_temp_text"
         android:layout_width="72dp"
         android:layout_height="28dp"
-        android:layout_marginEnd="28dp"
+        android:layout_marginStart="8dp"
         android:text="TextView"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/current_recycler_image"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/dayTime_text"
         android:layout_width="wrap_content"
         android:layout_height="21dp"
-        android:layout_marginStart="52dp"
         android:layout_marginTop="4dp"
+        android:layout_marginEnd="8dp"
         android:text="TextView"
-        app:layout_constraintEnd_toStartOf="@+id/item_current_temp_text"
-        app:layout_constraintHorizontal_bias="0.02"
+        app:layout_constraintEnd_toStartOf="@+id/current_recycler_image"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/current_recycler_image"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintEnd_toStartOf="@+id/item_current_temp_text"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/dayTime_text"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:srcCompat="@tools:sample/avatars" />
 </androidx.constraintlayout.widget.ConstraintLayout>
