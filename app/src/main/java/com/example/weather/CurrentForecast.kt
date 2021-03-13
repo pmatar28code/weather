@@ -85,10 +85,10 @@ data class CurrentForecast(
             val pop: Double,
             val pressure: Int,
             //val rain: Rain?,
-            val temp: Double
+            val temp: Double,
            // val uvi: Int?,
             //val visibility: Int?,
-            //val weather: List<Weather>,
+            val weather: List<ForecastServer.Hourly.Weather>
            // val windDeg: Int?,
            // val windSpeed: Double?
     ) {

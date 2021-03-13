@@ -28,7 +28,7 @@ class CurrentAdapter(
 
     override fun getItemCount() = items.size
 
-    @ExperimentalTime
+   // @ExperimentalTime
     override fun onBindViewHolder(
             holder: CurrentViewHolder,position: Int) {
         val item = items[position]
@@ -39,11 +39,11 @@ class CurrentAdapter(
     class CurrentViewHolder(
             private val binding: ItemCurrentBinding
     ):RecyclerView.ViewHolder(binding.root){
-        @ExperimentalTime
+        //@ExperimentalTime
         fun onBind(current:CurrentForecast.Hourly){
             binding.apply {
-                itemCurrentTempText.text = current.feelsLike .toString()
-                var dateTime = WeatherRepository.getShortDate(current.dt.toLong())
+                itemCurrentTempText.text = current.feelsLike.toString()
+                var dateTime = WeatherRepository.getDateTimeFromEpocLongOfSeconds(current.dt.toLong())
                 dayTimeText.text =dateTime
 
             }

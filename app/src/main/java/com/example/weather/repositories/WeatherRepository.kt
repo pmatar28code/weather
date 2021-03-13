@@ -11,6 +11,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.util.*
+import java.time.*
 
 object WeatherRepository {
     class Location(){
@@ -36,6 +37,20 @@ object WeatherRepository {
         //return formatted date
         return android.text.format.DateFormat.format("E, dd MMM yyyy", calendar).toString()
     }
+
+    fun getDateTimeFromEpocLongOfSeconds(epoc: Long): String? {
+        try {
+            val netDate = Date(epoc*1000)
+            return netDate.toString()
+        }
+        catch (e: Exception) {
+            return e.toString()
+        }
+    }
+
+
+
+
 
 
     private fun WeatherServer.toCurrentWeather(): CurrentWeather {
@@ -118,7 +133,8 @@ object WeatherRepository {
                                 item.humidity,
                                 item.pop,
                                 item.pressure,
-                                item.dewPoint
+                                item.dewPoint,
+                                item.weather
                         )
                         currentList.add(current)
                     }

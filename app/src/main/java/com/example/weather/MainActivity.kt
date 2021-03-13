@@ -83,6 +83,7 @@ class MainActivity:AppCompatActivity() {
         }
     }
 
+
     private fun getLocationListener() {
       // var locationButton = findViewById<Button>(R.id.location_button).setOnClickListener {
         if (ActivityCompat.checkSelfPermission(
@@ -95,7 +96,7 @@ class MainActivity:AppCompatActivity() {
         }
         fuseLocationProvider.lastLocation
         .addOnSuccessListener{
-            //if(it.latitude != null && it.longitude!=null) {
+            if(it.latitude != null && it.longitude!=null) {
                 lat = it.latitude
                 lon = it.longitude
                 WeatherRepository.locationObj.lat = it.latitude
@@ -106,7 +107,7 @@ class MainActivity:AppCompatActivity() {
                 WeatherRepository.callGetWeatherRecycler(this,lat,lon,units,apikeyFore)
 
                 //swapFragments(ForecastFragment())
-                //}
+                }
             }
         //}
     }
