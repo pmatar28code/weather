@@ -1,16 +1,12 @@
 package com.example.weather
 
-import android.os.Handler
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.ImageView
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.weather.databinding.ItemForecastBinding
 import com.example.weather.repositories.WeatherRepository
 import com.squareup.picasso.Picasso
-import java.util.*
 
 class ForecastAdapter(
         private val items:List<CurrentForecast.Daily>
@@ -37,9 +33,9 @@ class ForecastAdapter(
             var iconUrl = "http://openweathermap.org/img/w/$iconCode.png";
             return iconUrl
         }
-        Picasso.get().load(getCurrentImage(icon)).into(holder.itemView.findViewById<ImageView>(R.id.icon_view))
+        Picasso.get().load(getCurrentImage(icon)).into(holder.itemView
+                .findViewById<ImageView>(R.id.icon_view))
     }
-
 
     class ForecastViewHolder(
             private val binding: ItemForecastBinding
@@ -50,17 +46,9 @@ class ForecastAdapter(
                 iconView
                 var dateTime = WeatherRepository.getShortDate(Forecast.dt.toLong())
                 dtText.text =dateTime
-               // Picasso.get().load(getCurrentImage(getImageCode())).into(iconView)
             }
         }
-       // fun getCurrentImage(iconCode:String):String {
-          //  var iconUrl = "http://openweathermap.org/img/w/$iconCode.png";
-          //  return iconUrl
-       // }
-        //fun getImageCode():String{
-           // val imageCode = WeatherRepository.forecastList[0].weather[0].icon
-           // return imageCode
-        //}
+
     }
 }
 

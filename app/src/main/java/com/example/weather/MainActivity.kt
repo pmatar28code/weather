@@ -1,9 +1,12 @@
 package com.example.weather
 
 import android.Manifest
+import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.os.Handler
+import android.view.View
+import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
@@ -24,21 +27,23 @@ class MainActivity:AppCompatActivity() {
     private var units = "metric"
     private var locationRequest: LocationRequest? = null
 
+
     override fun onCreate(savedInstanceState: Bundle?)
     {
-
         super.onCreate(savedInstanceState)
         val binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         fuseLocationProvider = LocationServices.getFusedLocationProviderClient(this)
 
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+        if (ActivityCompat.checkSelfPermission(this
+                        , Manifest.permission.ACCESS_FINE_LOCATION)
            != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission
            (this, Manifest.permission.ACCESS_COARSE_LOCATION
            ) != PackageManager.PERMISSION_GRANTED)
         {
-                ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION
+                ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission
+                        .ACCESS_FINE_LOCATION
                 ,Manifest.permission.ACCESS_COARSE_LOCATION), requestLocationCode)
         } else {
             getLocationListener()
@@ -47,16 +52,12 @@ class MainActivity:AppCompatActivity() {
         Handler().postDelayed(
                 {
                     swapFragmentsForecast(CurrentRecyclerFragment())
-
-                    // This method will be executed once the timer is over
                 },
                 1000 // value in milliseconds
         )
         Handler().postDelayed(
                 {
                     swapFragmentsCurrent(CurrentFragment())
-
-                    // This method will be executed once the timer is over
                 },
                 2500 // value in milliseconds
         )
@@ -65,8 +66,6 @@ class MainActivity:AppCompatActivity() {
             Handler().postDelayed(
                     {
                         swapFragmentsForecast(ForecastFragment())
-
-                        // This method will be executed once the timer is over
                     },
                     500 // value in milliseconds
             )
@@ -75,24 +74,19 @@ class MainActivity:AppCompatActivity() {
             Handler().postDelayed(
                     {
                         swapFragmentsForecast(CurrentRecyclerFragment())
-
-                        // This method will be executed once the timer is over
                     },
                     500 // value in milliseconds
             )
         }
     }
 
-
     private fun getLocationListener() {
-      // var locationButton = findViewById<Button>(R.id.location_button).setOnClickListener {
         if (ActivityCompat.checkSelfPermission(
            this, Manifest.permission.ACCESS_FINE_LOCATION)
            != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
            this, Manifest.permission.ACCESS_COARSE_LOCATION)
            != PackageManager.PERMISSION_GRANTED) {
-               // assert(PackageManager.PERMISSION_GRANTED != null)
-                return//@setOnClickListener
+            return
         }
         fuseLocationProvider.lastLocation
         .addOnSuccessListener{
@@ -105,14 +99,12 @@ class MainActivity:AppCompatActivity() {
                 WeatherRepository.callGetForecast(this,lat,lon,units,apikeyFore)
                 WeatherRepository.callGetWeather(this,lat,lon,units,apiKey)
                 WeatherRepository.callGetWeatherRecycler(this,lat,lon,units,apikeyFore)
-
-                //swapFragments(ForecastFragment())
-                }
             }
-        //}
+        }
     }
 
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+    override fun onRequestPermissionsResult(requestCode: Int, permissions:
+    Array<out String>, grantResults: IntArray) {
         when{
             requestCode == requestLocationCode -> {
                 if(permissions.contains(Manifest.permission.ACCESS_FINE_LOCATION)
@@ -136,27 +128,5 @@ class MainActivity:AppCompatActivity() {
     }
 }
 
-/* this was inside onlocationlistener inside if statement
 
-var textLocation = findViewById<TextView>(R.id.location_text)
-                 textLocation.text = "Lat: ${it.latitude} - Lon: ${it.longitude}"
-                 lat = it.latitude
-                 lon = it.longitude
-                 WeatherRepository.callGetWeather(this,lat,lon,units,apiKey)
-                 var weatherText = findViewById<TextView>(R.id.weather_text)
-                 weatherText.text = WeatherRepository.currentWeather?.main?.temp.toString()
-                 var tempTest = findViewById<TextView>(R.id.textView)
-                 tempTest.text = WeatherRepository.currentWeather?.weather?.description
-                 var testText = findViewById<TextView>(R.id.test_text)
-                 testText.text = WeatherRepository.testAtCero
-                 WeatherRepository.callGetForecast(this,lat,lon,units,apikeyFore)
-                 val recycler = findViewById<RecyclerView>(R.id.forecast_item)
-                 recycler.apply {
-                     val forecastAdapter = ForecastAdapter()
-                     adapter = TestAdapter(WeatherRepository.forecastList)
-                     //forecastAdapter.submitList(forecastList)
-                     layoutManager = LinearLayoutManager(this@MainActivity)
-                    }
-
- */
 

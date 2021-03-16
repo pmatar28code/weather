@@ -8,12 +8,15 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.weather.CurrentForecast
 import com.example.weather.databinding.ItemForecastBinding
 
-class ForecastAdapterTest: ListAdapter<CurrentForecast.Daily, ForecastAdapterTest.ForecastViewHolder>(diffUtil) {
+class ForecastAdapterTest: ListAdapter<CurrentForecast.Daily,
+        ForecastAdapterTest.ForecastViewHolder>(diffUtil) {
    companion object {
        private val diffUtil = object : DiffUtil.ItemCallback<CurrentForecast.Daily>(){
-           override fun areItemsTheSame(oldItem: CurrentForecast.Daily, newItem: CurrentForecast.Daily) = true
+           override fun areItemsTheSame(oldItem: CurrentForecast.Daily,
+           newItem: CurrentForecast.Daily) = true
 
-           override fun areContentsTheSame(oldItem: CurrentForecast.Daily, newItem: CurrentForecast.Daily): Boolean {
+           override fun areContentsTheSame(oldItem: CurrentForecast.Daily,
+           newItem: CurrentForecast.Daily): Boolean {
                return oldItem == newItem
            }
 
@@ -37,7 +40,6 @@ class ForecastAdapterTest: ListAdapter<CurrentForecast.Daily, ForecastAdapterTes
         fun onBind(Forecast:CurrentForecast.Daily){
             binding.apply {
                 tempText.text = Forecast.temp.toString()
-               // descriptionText.text =Forecast.weather[0].description
             }
 
         }
