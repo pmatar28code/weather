@@ -12,7 +12,7 @@ class CurrentFragment: Fragment(R.layout.current_fragment) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val binding = CurrentFragmentBinding.bind(view)
-
+        binding.cityText.text = WeatherRepository.currentWeather?.name
         binding.currentTempText.text = WeatherRepository.currentWeather?.main?.temp.toString()
         binding.currentDescriptionText.text =WeatherRepository.currentWeather?.weather?.description
         val dateNow = Calendar.getInstance().time

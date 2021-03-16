@@ -46,6 +46,7 @@ class ForecastAdapter(
                 iconView
                 var dateTime = WeatherRepository.getShortDate(Forecast.dt.toLong())
                 dtText.text =dateTime
+                tempMin.text = "/  ${Forecast.temp.min}"
             }
         }
 
